@@ -13,7 +13,6 @@ bool checkLoss (int boardValues[4][4]){
   for (int i = 0; i < 4; i++){
     for (int j = 0; j < 4; j++){
       if (boardValues[i][j] == 0){
-        cout << "there's a 0" << endl;
         return false;
       }
     }
@@ -30,13 +29,6 @@ bool checkLoss (int boardValues[4][4]){
         copyBoardValues[i][j] == copyBoardValues[i][j - 1] || 
         copyBoardValues[i][j] == copyBoardValues[i + 1][j] || 
         copyBoardValues[i][j] == copyBoardValues[i][j + 1]){
-        cout << "there's a match" << endl;
-        for (int i = 0; i < 6; i++){
-          for (int j = 0; j < 6; j++){
-            cout << copyBoardValues[i][j] << " ";
-          }
-          cout << endl;
-        }
         return false;
       }
     }
