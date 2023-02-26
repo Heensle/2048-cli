@@ -138,10 +138,12 @@ queue <int> combine (queue <int> uncombined){
       combined.push(comparison);
     }
   }
+  
   if (uncombined.size() == 1){
     combined.push(uncombined.front());
     uncombined.pop();
   }
+  
   return combined;
 }
 
@@ -248,57 +250,68 @@ void printHeader (int moves, string status){
 }
 
 int main() {
-  
-  bool won = false;
-  int moves = 0;
-  string status = "Loser";
-  bool changed = false;
 
   srand ((unsigned) time(NULL));
+  
+  bool won = false;
+  bool changed = false;
+  int moves = 0;
+  string status = "Loser";
+  char move;
 
   int boardValues[4][4] = {};
-  char move;
   int prevValues[4][4];
-
 
   addRand (boardValues);
   addRand (boardValues);
 
   while (true){
+    
     if (changed){
       addRand (boardValues);
     }
+    
     for (int i = 0; i < 4; i++){
       for (int j = 0; j < 4; j++){
         prevValues[i][j] = boardValues[i][j];
       }
     }
+    
     changed = false;
+    
     while (true){
-      if (checkLoss(boardValues)){
-      printHeader(moves, status);
-      printBoard(boardValues);
-      cout << endl << endl << "            " << "YOU LOSE" << endl;
-      return 0;
-    }
+      
       if (checkVictory(boardValues, won)){
-      status = "Winner";
-    }
+        status = "Winner";
+      }
+      
       printHeader(moves, status);
       printBoard(boardValues);
+      
       if (checkVictory(boardValues, won)){
         cout << endl << endl << "            " << "YOU WIN!" << endl;
         won = true;
       }
+      
+      if (checkLoss(boardValues)){
+        cout << endl << endl << "            " << "YOU LOSE" << endl;
+        return 0;
+      }
+      
       move = playerInput();
+      
       if (move == 'a' || move == 's' || move == 'd' || move == 'w'){
         break;
       }
+      
       cout << "\033[H\033[2J\033[3J";
       cout << "Not a valid input. Try again." << endl;
+      
     }
+    
     boardShift(boardValues, move);
     cout << "\033[H\033[2J\033[3J";
+    
     for (int i = 0; i < 4; i++){
       for (int j = 0; j < 4; j++){
         if (prevValues[i][j] != boardValues[i][j]){
@@ -306,9 +319,11 @@ int main() {
         }
       }
     }
+    
     if (changed){
       moves++;
     }
+    
   }
 
   return 0;
