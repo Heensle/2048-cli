@@ -9,6 +9,41 @@
 #include <stdlib.h>
 using namespace std;
 
+bool checkLoss (int boardValues[4][4]){
+  for (int i = 0; i < 4; i++){
+    for (int j = 0; j < 4; j++){
+      if (boardValues[i][j] == 0){
+        cout << "there's a 0" << endl;
+        return false;
+      }
+    }
+  }
+  int copyBoardValues[6][6] = {};
+  for (int i = 1; i < 5; i++){
+    for (int j = 1; j < 5; j++){
+      copyBoardValues[i][j] = boardValues [i - 1][j - 1];
+    }
+  }
+  for (int i = 1; i < 5; i++){
+    for (int j = 1; j < 5; j++){
+      if (copyBoardValues[i][j] == copyBoardValues[i - 1][j] || 
+        copyBoardValues[i][j] == copyBoardValues[i][j - 1] || 
+        copyBoardValues[i][j] == copyBoardValues[i + 1][j] || 
+        copyBoardValues[i][j] == copyBoardValues[i][j + 1]){
+        cout << "there's a match" << endl;
+        for (int i = 0; i < 6; i++){
+          for (int j = 0; j < 6; j++){
+            cout << copyBoardValues[i][j] << " ";
+          }
+          cout << endl;
+        }
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 bool checkVictory(int boardValues[4][4], bool won){
   if (won){
     return false;
@@ -220,7 +255,6 @@ void printHeader (int moves, string status){
   cout << "\u001b[48;5;17m" << "    " << "Moves: " << moves << "    " << "Status: " << status << "   " << endl << endl << endl;
 }
 
-
 int main() {
   
   bool won = false;
@@ -277,6 +311,12 @@ int main() {
     }
     if (changed){
       moves++;
+    }
+    if (checkLoss(boardValues)){
+      printHeader(moves, status);
+      printBoard(boardValues);
+      cout << endl << endl << "            " << "YOU LOSE" << endl;
+      return 0;
     }
   }
 
