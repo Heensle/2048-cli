@@ -9,7 +9,10 @@
 #include <stdlib.h>
 using namespace std;
 
-bool checkVictory(int boardValues[4][4]){
+bool checkVictory(int boardValues[4][4], bool won){
+  if (won){
+    return false;
+  }
   bool victory = false;
   for (int i = 0; i < 4; i++){
     for (int j = 0; j < 4; j++){
@@ -214,33 +217,47 @@ void addRand (int (&boardValues)[4][4]){
 }
 
 void printHeader (int moves, string status){
-  cout << "\u001b[48;5;17m" << "    " << "Moves: " << moves << "    " << "Status: " << status << endl << endl << endl;
+  cout << "\u001b[48;5;17m" << "    " << "Moves: " << moves << "    " << "Status: " << status << "   " << endl << endl << endl;
 }
 
 
 int main() {
-
+  
+  bool won = false;
   int moves = 0;
   string status = "Loser";
+  bool changed = false;
 
   srand ((unsigned) time(NULL));
 
   int boardValues[4][4] = {};
   char move;
+  int prevValues[4][4];
 
+
+  addRand (boardValues);
   addRand (boardValues);
 
   while (true){
-    addRand (boardValues);
+    if (changed){
+      addRand (boardValues);
+    }
+    for (int i = 0; i < 4; i++){
+      for (int j = 0; j < 4; j++){
+        prevValues[i][j] = boardValues[i][j];
+      }
+    }
+    changed = false;
     while (true){
 
-      if (checkVictory(boardValues)){
+      if (checkVictory(boardValues, won)){
       status = "Winner";
     }
       printHeader(moves, status);
       printBoard(boardValues);
-      if (checkVictory(boardValues)){
+      if (checkVictory(boardValues, won)){
         cout << endl << endl << "            " << "YOU WIN!" << endl;
+        won = true;
       }
       move = playerInput();
       if (move == 'a' || move == 's' || move == 'd' || move == 'w'){
@@ -251,7 +268,16 @@ int main() {
     }
     boardShift(boardValues, move);
     cout << "\033[H\033[2J\033[3J";
-    moves++;
+    for (int i = 0; i < 4; i++){
+      for (int j = 0; j < 4; j++){
+        if (prevValues[i][j] != boardValues[i][j]){
+          changed = true;
+        }
+      }
+    }
+    if (changed){
+      moves++;
+    }
   }
 
   return 0;
