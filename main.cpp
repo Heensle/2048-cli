@@ -283,7 +283,12 @@ int main() {
     }
     changed = false;
     while (true){
-
+      if (checkLoss(boardValues)){
+      printHeader(moves, status);
+      printBoard(boardValues);
+      cout << endl << endl << "            " << "YOU LOSE" << endl;
+      return 0;
+    }
       if (checkVictory(boardValues, won)){
       status = "Winner";
     }
@@ -311,12 +316,6 @@ int main() {
     }
     if (changed){
       moves++;
-    }
-    if (checkLoss(boardValues)){
-      printHeader(moves, status);
-      printBoard(boardValues);
-      cout << endl << endl << "            " << "YOU LOSE" << endl;
-      return 0;
     }
   }
 
