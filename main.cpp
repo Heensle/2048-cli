@@ -73,6 +73,10 @@ void textBackColor (int num){
     cout << "\u001b[48;5;221m" << "\u001b[37m";
   } else if (num == 2048){
     cout << "\u001b[48;5;220m" << "\u001b[37m";
+  } else if (num == 4096){
+    cout << "\u001b[48;5;220m" << "\u001b[37m";
+  } else if (num == 8192){
+    cout << "\u001b[48;5;220m" << "\u001b[37m";
   } else {
     cout << "\u001b[0m";
   }
