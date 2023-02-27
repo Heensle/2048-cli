@@ -10,13 +10,6 @@
 using namespace std;
 
 bool checkLoss (int boardValues[4][4]){
-  for (int i = 0; i < 4; i++){
-    for (int j = 0; j < 4; j++){
-      if (boardValues[i][j] == 0){
-        return false;
-      }
-    }
-  }
   int copyBoardValues[6][6] = {};
   for (int i = 1; i < 5; i++){
     for (int j = 1; j < 5; j++){
