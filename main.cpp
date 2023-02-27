@@ -79,34 +79,67 @@ void textBackColor (int num){
 }
 
 void printBoard(int boardValues[4][4]){
+  cout << "┌";
+  for (int i = 1; i < 32; i++){
+    if (i % 8 == 0){
+      cout << "┬";
+    } else {
+      cout << "\u001b[0m" << "─";
+    }
+  }
+  cout << "┐";
+  cout << endl;
   for (int i = 0; i < 4; i++){
+    cout << "│";
     for (int j = 0; j < 4; j++){
       textBackColor(boardValues[i][j]);
-      cout << "       " << "\u001b[0m" << "|";
+      cout << "       " << "\u001b[0m" << "│";
     }
     cout << endl;
+    cout << "│";
     for (int j = 0; j < 4; j++){
       if (boardValues[i][j] == 0){
-        cout << setw(8) << "|";
+        cout << "       " << "│";
       } else {
       textBackColor(boardValues[i][j]);
         if (boardValues[i][j] / 10 > 100){
-          cout << " " << boardValues[i][j] << "  " << "\u001b[0m" << "|";
+          cout << " " << boardValues[i][j] << "  " << "\u001b[0m" << "│";
         } else if (boardValues[i][j] / 10 > 10){
-          cout << "  " << boardValues[i][j] << "  " << "\u001b[0m" << "|";
+          cout << "  " << boardValues[i][j] << "  " << "\u001b[0m" << "│";
         } else if (boardValues[i][j] / 10 >= 1){
-          cout << "  " << boardValues[i][j] << "   " << "\u001b[0m" << "|";
+          cout << "  " << boardValues[i][j] << "   " << "\u001b[0m" << "│";
         } else{
-          cout << "   " << boardValues[i][j] << "   " << "\u001b[0m" << "|";
+          cout << "   " << boardValues[i][j] << "   " << "\u001b[0m" << "│";
         }
       }
+      
     }
-    cout << endl;
+    cout << endl << "│";
     for (int j = 0; j < 4; j++){
       textBackColor(boardValues[i][j]);
-      cout << "       " << "\u001b[0m" << "|";
+      cout << "       " << "\u001b[0m" << "│";
     }
-    cout << endl;
+    if (i != 3){
+      cout << endl << "├";
+    } else {
+      cout << endl << "└";
+    }
+    for (int j = 1; j < 32; j++){
+      if (j % 8 == 0){
+        if (i == 3){
+          cout << "┴";
+        } else {
+          cout << "┼";
+        }
+      } else {
+        cout << "─";
+      }
+    }
+    if (i == 3){
+      cout << "┘" << endl;
+    } else {
+      cout << "┤" << endl;
+    }
   }
 }
 
