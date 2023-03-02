@@ -10,6 +10,10 @@
 using namespace std;
 
 bool checkLoss (int boardValues[4][4]){
+  /* loss condition is:
+        no more combinable spaces
+      function immediately returns false if any 0s are present 
+  */
   int copyBoardValues[6][6] = {};
   for (int i = 1; i < 5; i++){
     for (int j = 1; j < 5; j++){
@@ -30,6 +34,10 @@ bool checkLoss (int boardValues[4][4]){
 }
 
 bool checkVictory(int boardValues[4][4], bool won){
+  /* win condition:
+      2048 is present on the board
+      (function will return false in the case that the game has already been won, to avoid unremovable distracting messages)
+  */
   if (won){
     return false;
   }
@@ -51,6 +59,7 @@ void clear(queue <int>& queueToBeCleared){
 }
 
 void textBackColor (int num){
+  /* sets unique and background colors for all numbers up to 4 digits */
   if (num == 2){
     cout << "\u001b[7m";
   } else if (num == 4){
@@ -83,6 +92,9 @@ void textBackColor (int num){
 }
 
 void printBoard(int boardValues[4][4]){
+  /* responsible for board frame output (tabletop chars) and current state of board (boardValues[x][x]) 
+    "\u001b[0m" is the reset ANSI code, is outputted periodically
+  */
   cout << "┌";
   for (int i = 1; i < 32; i++){
     if (i % 8 == 0){
@@ -157,6 +169,8 @@ char playerInput (){
 }
 
 queue <int> combine (queue <int> uncombined){
+  /* combines queue values according to 2048 standard of equivalent combination
+  */
   queue <int> combined;
   while (uncombined.size() > 1){
     int comparison = uncombined.front();
@@ -178,6 +192,7 @@ queue <int> combine (queue <int> uncombined){
 }
 
 void boardShift (int (&boardValues)[4][4], char move){
+  /* feeds queues to combined() in direction indicated by input */
   queue <int> uncombined;
   if (move == 'w'){
     for (int i = 0; i < 4; i++){
@@ -255,6 +270,7 @@ void boardShift (int (&boardValues)[4][4], char move){
 }  
 
 void addRand (int (&boardValues)[4][4]){
+  /* generates 2 / 4 in random empty space */
   int numAdd;
   if (rand() % 10 + 1 > 1){
     numAdd = 2;
@@ -292,17 +308,20 @@ int main() {
   int boardValues[4][4] = {};
   int prevValues[4][4];
 
+  /* initial values to begin game */
   addRand (boardValues);
   addRand (boardValues);
 
   while (true){
     
     if (changed){
+      /* no numbers will be added if no valid move was made */
       addRand (boardValues);
     }
     
     for (int i = 0; i < 4; i++){
       for (int j = 0; j < 4; j++){
+        /* values stored for comparison */
         prevValues[i][j] = boardValues[i][j];
       }
     }
@@ -310,6 +329,7 @@ int main() {
     changed = false;
     
     while (true){
+      /* loop entered for invalid input barrier */
       
       if (checkVictory(boardValues, won)){
         status = "Winner";
@@ -320,6 +340,7 @@ int main() {
       
       if (checkVictory(boardValues, won)){
         cout << endl << endl << "            " << "YOU WIN!" << endl;
+        /* prevents message from spamming terminal */
         won = true;
       }
       
@@ -333,7 +354,8 @@ int main() {
       if (move == 'a' || move == 's' || move == 'd' || move == 'w'){
         break;
       }
-      
+
+      /* clear screen ANSI code */
       cout << "\033[H\033[2J\033[3J";
       cout << "Not a valid input. Try again." << endl;
       
@@ -344,6 +366,7 @@ int main() {
     
     for (int i = 0; i < 4; i++){
       for (int j = 0; j < 4; j++){
+        /* comparison for valid move indentification */
         if (prevValues[i][j] != boardValues[i][j]){
           changed = true;
         }
