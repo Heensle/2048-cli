@@ -9,6 +9,19 @@
 #include <stdlib.h>
 using namespace std;
 
+void ruleBook(){
+  char input;
+  while(true){
+    cout << "\033[H\033[2J\033[3J";
+    cout << "''2048 is a single-player sliding tile puzzle video game written by Italian web developer Gabriele Cirulli and published on GitHub. The objective of the game is to slide numbered tiles on a grid to combine them to create a tile with the number 2048; however, one can continue to play the game after reaching the goal, creating tiles with larger numbers.''" << endl << "   Source: Wikipedia" << endl << endl << "Use 'w', 'a', 's', and 'd' inputs to slide tiles in those directions. Press enter after each character to send your input to the computer. Any other inputs will be rejected." << endl << endl << "You can use '?' to see the rules at any time." << endl << endl << "Press 'x' to continue:" << endl;
+    cin >> input;
+    if (input == 'x'){
+      break;
+    }
+    cout << "\033[H\033[2J\033[3J";
+  }
+}
+
 bool checkLoss (int boardValues[4][4]){
   /* loss condition is:
         no more combinable spaces
@@ -165,6 +178,10 @@ char playerInput (){
   if (move == 'w' || move == 'a' || move == 's' || move == 'd'){
     return move;
   }
+  if (move == '?'){
+    ruleBook();
+    return '?';
+  }
   return 'x';
 }
 
@@ -312,6 +329,8 @@ int main() {
   addRand (boardValues);
   addRand (boardValues);
 
+  cout << "Press '?' for rules." << endl << endl;
+
   while (true){
     
     if (changed){
@@ -354,11 +373,12 @@ int main() {
       if (move == 'a' || move == 's' || move == 'd' || move == 'w'){
         break;
       }
-
+    
       /* clear screen ANSI code */
       cout << "\033[H\033[2J\033[3J";
-      cout << "Not a valid input. Try again." << endl;
-      
+      if (move == 'x'){
+        cout << "Not a valid input. Try again." << endl;
+      }
     }
     
     boardShift(boardValues, move);
